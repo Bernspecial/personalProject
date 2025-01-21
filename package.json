@@ -1,0 +1,19 @@
+{
+  "name": "personalproject",
+  "version": "1.0.0",
+  "description": "Personal Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bernspecial/personalProject.git"
+  },
+  "author": "Bernard Olayemi Michael",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bernspecial/personalProject/issues"
+  },
+  "homepage": "https://github.com/Bernspecial/personalProject#readme"
+}
