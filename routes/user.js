@@ -10,7 +10,7 @@ const quoteValidationRules = [
     body('name').isString().trim().notEmpty().withMessage('Name is required.'),
     body('born').isString().trim().notEmpty().withMessage('Born date is required.'),
     body('died').isString().trim().optional().custom((value, { req }) => {
-        if (value && moment(value).isBefore(moment(req.body.born))) {
+        if (value && moment(value).isSameOrBefore(moment(req.body.born))) {
             throw new Error('Died date must be greater than Born date.');
         }
         return true; // Indicates the validation passed
