@@ -97,9 +97,9 @@ const deleteQuote = async (req, res) => {
     try {
         const result = await mongodb.getDb().db().collection('country_president').deleteOne({ _id: new ObjectId(countryId) });
         if (result.deletedCount > 0) {
-            res.status(200).json({ message: 'Quote deleted successfully' });
+            res.status(200).json({ message: 'Data deleted successfully' });
         } else {
-            res.status(404).json({ message: 'Quote not found.' });
+            res.status(404).json({ message: 'Data not found.' });
         }
     } catch (error) {
         console.error('Error deleting quote:', error);
