@@ -15,7 +15,7 @@ const quoteValidationRules = [
 
 // Validation rules for updating a qcountry
 const updateQuoteValidationRules = [
-    param('id').isMongoId().withMessage('Invalid quote ID format.'),
+    param('id').isMongoId().withMessage('Invalid country ID format.'),
     ...quoteValidationRules // Reuse the same validation rules for the update
 ];
 
@@ -23,7 +23,7 @@ const updateQuoteValidationRules = [
 router.get("/", usercontroller.getAllData); // Get all countries
 
 router.get("/:id", [
-    param('id').isMongoId().withMessage('Invalid quote ID format.')
+    param('id').isMongoId().withMessage('Invalid country ID format.')
 ], usercontroller.getSingleData); // Get a single quote by ID
 
 router.post("/", quoteValidationRules, (req, res, next) => {
@@ -43,7 +43,7 @@ router.put("/:id", updateQuoteValidationRules, (req, res, next) => {
 }, usercontroller.updateQuote); // Update a country
 
 router.delete("/:id", [
-    param('id').isMongoId().withMessage('Invalid quote ID format.')
+    param('id').isMongoId().withMessage('Invalid country ID format.')
 ], usercontroller.deleteQuote); // Delete a country
 
 module.exports = router;

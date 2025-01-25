@@ -2,14 +2,19 @@
 const express = require("express");
 const router = express.Router();
 const { body, param, validationResult } = require('express-validator');
-
+const moment = require('moment');
 const usercontroller = require("../controller/response");
 
 // Validation rules for creating a quote
 const quoteValidationRules = [
     body('name').isString().trim().notEmpty().withMessage('Name is required.'),
     body('born').isString().trim().notEmpty().withMessage('Born date is required.'),
-    body('died').isString().trim().optional(), // Optional field
+    body('died').isString().trim().optional().custom((value, { req }) => {
+        if (value && moment(value).isBefore(moment(req.body.born))) {
+            throw new Error('Died date must be greater than Born date.');
+        }
+        return true; // Indicates the validation passed
+    }),
     body('nationality').isString().trim().notEmpty().withMessage('Nationality is required.'),
     body('quote').isString().trim().notEmpty().withMessage('Quote is required.')
 ];
