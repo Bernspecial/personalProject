@@ -5,7 +5,7 @@ const { body, param, validationResult } = require('express-validator');
 
 const usercontroller = require("../controller/response2");
 
-// Validation rules for creating a quote
+// Validation rules for creating a country
 const quoteValidationRules = [
     body('country').isString().trim().notEmpty().withMessage('Country name is required.'),
     body('continent').isString().trim().notEmpty().withMessage('Continent name is required.'),
@@ -13,14 +13,14 @@ const quoteValidationRules = [
     body('potentialPresident').isString().trim().notEmpty().withMessage('Potential President name is required.'),
 ];
 
-// Validation rules for updating a quote
+// Validation rules for updating a qcountry
 const updateQuoteValidationRules = [
     param('id').isMongoId().withMessage('Invalid quote ID format.'),
     ...quoteValidationRules // Reuse the same validation rules for the update
 ];
 
 // Routes
-router.get("/", usercontroller.getAllData); // Get all quotes
+router.get("/", usercontroller.getAllData); // Get all countries
 
 router.get("/:id", [
     param('id').isMongoId().withMessage('Invalid quote ID format.')
@@ -32,7 +32,7 @@ router.post("/", quoteValidationRules, (req, res, next) => {
         return res.status(400).json({ errors: errors.array() });
     }
     next();
-}, usercontroller.createQuote); // Create a new quote
+}, usercontroller.createQuote); // Create a new country
 
 router.put("/:id", updateQuoteValidationRules, (req, res, next) => {
     const errors = validationResult(req);
@@ -40,10 +40,10 @@ router.put("/:id", updateQuoteValidationRules, (req, res, next) => {
         return res.status(400).json({ errors: errors.array() });
     }
     next();
-}, usercontroller.updateQuote); // Update a quote
+}, usercontroller.updateQuote); // Update a country
 
 router.delete("/:id", [
     param('id').isMongoId().withMessage('Invalid quote ID format.')
-], usercontroller.deleteQuote); // Delete a quote
+], usercontroller.deleteQuote); // Delete a country
 
 module.exports = router;

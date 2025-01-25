@@ -26,7 +26,7 @@ const getSingleData = async (req, res) => {
     }
 
     try {
-        const response = await mongodb.getDb().db().collection('country_president').findOne({ _id: new ObjectId(quoteId) });
+        const response = await mongodb.getDb().db().collection('country_president').findOne({ _id: new ObjectId(countryId) });
 
         if (!response) {
             return res.status(404).json({ message: 'Quote not found.' });
