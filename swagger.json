@@ -5,7 +5,7 @@
     "description": "World Famous Leaders and Their Quotes, and Current and Potential President of Some Countries API",
     "version": "1.0.0"
   },
-  "host": "localhost:5050",
+  "host": "personalproject-rc3p.onrender.com",
   "basePath": "/",
   "schemes": [
     "https"
@@ -17,6 +17,16 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/api-docs": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }
