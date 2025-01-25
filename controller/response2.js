@@ -3,10 +3,10 @@ const mongodb = require("../Dbase/connection");
 const { ObjectId } = require('mongodb');
 const { validationResult } = require('express-validator');
 
-// Get all quotes
+// Get all data
 const getAllData = async (req, res) => {
     try {
-        const response = await mongodb.getDb().db().collection('leaders_quote').find();
+        const response = await mongodb.getDb().db().collection('country_president').find();
         response.toArray().then((lists) => {
             res.setHeader('Content-Type', 'application/json');
             res.status(200).json(lists);
@@ -17,16 +17,16 @@ const getAllData = async (req, res) => {
     }
 };
 
-// Get a single quote by ID
+// Get a single data by ID
 const getSingleData = async (req, res) => {
-    const quoteId = req.params.id;
+    const countryId = req.params.id;
 
-    if (!ObjectId.isValid(quoteId)) {
+    if (!ObjectId.isValid(countryId)) {
         return res.status(400).json({ message: 'Invalid quote ID format.' });
     }
 
     try {
-        const response = await mongodb.getDb().db().collection('leaders_quote').findOne({ _id: new ObjectId(quoteId) });
+        const response = await mongodb.getDb().db().collection('country_president').findOne({ _id: new ObjectId(quoteId) });
 
         if (!response) {
             return res.status(404).json({ message: 'Quote not found.' });
@@ -40,25 +40,24 @@ const getSingleData = async (req, res) => {
     }
 };
 
-// Create a new quote
+// Create a new data
 const createQuote = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const quote = {
-        name: req.body.name,
-        born: req.body.born,
-        died: req.body.died,
-        nationality: req.body.nationality,
-        quote: req.body.quote
+    const response = {
+        country: req.body.country,
+        continent: req.body.continent,
+        currentPresident: req.body.currentPresident,
+        potentialPresident: req.body.potentialPresident
     };
 
     try {
-        const result = await mongodb.getDb().db().collection('leaders_quote').insertOne(quote);
+        const result = await mongodb.getDb().db().collection('country_president').insertOne(response);
         if (result.acknowledged) {
-            res.status(201).json({ message: 'Quote created successfully', id: result.insertedId });
+            res.status(201).json({ message: 'Data created successfully', id: result.insertedId });
         } else {
             res.status(500).json(result.error || "Some error occurred while creating the quote.");
         }
@@ -68,23 +67,22 @@ const createQuote = async (req, res) => {
     }
 };
 
-// Update a quote
+// Update a data
 const updateQuote = async (req, res) => {
-    const quoteId = req.params.id;
-    const quote = {
-        name: req.body.name,
-        born: req.body.born,
-        died: req.body.died,
-        nationality: req.body.nationality,
-        quote: req.body.quote
+    const countryId = req.params.id;
+    const response = {
+        country: req.body.country,
+        continent: req.body.continent,
+        currentPresident: req.body.currentPresident,
+        potentialPresident: req.body.potentialPresident
     };
 
     try {
-        const result = await mongodb.getDb().db().collection('leaders_quote').replaceOne({ _id: new ObjectId(quoteId) }, quote);
+        const result = await mongodb.getDb().db().collection('country_president').replaceOne({ _id: new ObjectId(countryId) }, response);
         if (result.modifiedCount > 0) {
-            res.status(200).json({ message: 'Quote updated successfully' });
+            res.status(200).json({ message: 'Data updated successfully' });
         } else {
-            res.status(404).json({ message: 'Quote not found or no changes made.' });
+            res.status(404).json({ message: 'Data not found or no changes made.' });
         }
     } catch (error) {
         console.error('Error updating quote:', error);
@@ -92,12 +90,12 @@ const updateQuote = async (req, res) => {
     }
 };
 
-// Delete a quote
+// Delete a data
 const deleteQuote = async (req, res) => {
-    const quoteId = req.params.id;
+    const countryId = req.params.id;
 
     try {
-        const result = await mongodb.getDb().db().collection('leaders_quote').deleteOne({ _id: new ObjectId(quoteId) });
+        const result = await mongodb.getDb().db().collection('country_president').deleteOne({ _id: new ObjectId(countryId) });
         if (result.deletedCount > 0) {
             res.status(200).json({ message: 'Quote deleted successfully' });
         } else {
