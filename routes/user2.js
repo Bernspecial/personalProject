@@ -4,6 +4,7 @@ const router = express.Router();
 const { body, param, validationResult } = require('express-validator');
 
 const usercontroller = require("../controller/response2");
+const { isAuthenticated } = require("../middleware/authenticate");
 
 // Validation rules for creating a country
 const quoteValidationRules = [
@@ -26,7 +27,7 @@ router.get("/:id", [
     param('id').isMongoId().withMessage('Invalid country ID format.')
 ], usercontroller.getSingleData); // Get a single quote by ID
 
-router.post("/", quoteValidationRules, (req, res, next) => {
+router.post("/", isAuthenticated, quoteValidationRules, (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -34,7 +35,7 @@ router.post("/", quoteValidationRules, (req, res, next) => {
     next();
 }, usercontroller.createQuote); // Create a new country
 
-router.put("/:id", updateQuoteValidationRules, (req, res, next) => {
+router.put("/:id", isAuthenticated, updateQuoteValidationRules, (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -42,7 +43,7 @@ router.put("/:id", updateQuoteValidationRules, (req, res, next) => {
     next();
 }, usercontroller.updateQuote); // Update a country
 
-router.delete("/:id", [
+router.delete("/:id", isAuthenticated, [
     param('id').isMongoId().withMessage('Invalid country ID format.')
 ], usercontroller.deleteQuote); // Delete a country
 

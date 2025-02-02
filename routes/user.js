@@ -4,6 +4,7 @@ const router = express.Router();
 const { body, param, validationResult } = require('express-validator');
 const moment = require('moment');
 const usercontroller = require("../controller/response");
+const {isAuthenticated} = require("../middleware/authenticate");
 
 // Validation rules for creating a quote
 const quoteValidationRules = [
@@ -32,7 +33,7 @@ router.get("/:id", [
     param('id').isMongoId().withMessage('Invalid quote ID format.')
 ], usercontroller.getSingleData); // Get a single quote by ID
 
-router.post("/", quoteValidationRules, (req, res, next) => {
+router.post("/", isAuthenticated, quoteValidationRules, (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -40,7 +41,7 @@ router.post("/", quoteValidationRules, (req, res, next) => {
     next();
 }, usercontroller.createQuote); // Create a new quote
 
-router.put("/:id", updateQuoteValidationRules, (req, res, next) => {
+router.put("/:id", isAuthenticated, updateQuoteValidationRules, (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -48,7 +49,7 @@ router.put("/:id", updateQuoteValidationRules, (req, res, next) => {
     next();
 }, usercontroller.updateQuote); // Update a quote
 
-router.delete("/:id", [
+router.delete("/:id", isAuthenticated, [
     param('id').isMongoId().withMessage('Invalid quote ID format.')
 ], usercontroller.deleteQuote); // Delete a quote
 
